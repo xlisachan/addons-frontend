@@ -348,14 +348,11 @@ export class AddonReviewCardBase extends React.Component<InternalProps> {
     const noAuthor = shortByLine || this.isReply();
 
     if (review) {
-      const withAuthor =
-        (!review.userUrl)
-          ?
-          i18n.gettext(
+      const withAuthor = !review.userUrl
+        ? i18n.gettext(
             'by %(authorName)s, %(linkStart)s%(timestamp)s%(linkEnd)s',
           )
-          :
-          i18n.gettext(
+        : i18n.gettext(
             'by %(urlStart)s%(authorName)s%(urlEnd)s, %(linkStart)s%(timestamp)s%(linkEnd)s',
           );
 
