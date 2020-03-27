@@ -348,19 +348,13 @@ export class AddonReviewCardBase extends React.Component<InternalProps> {
     const noAuthor = shortByLine || this.isReply();
 
     if (review) {
-      const withAuthor = !review.userUrl
-        ? i18n.gettext(
-            'by %(authorName)s, %(linkStart)s%(timestamp)s%(linkEnd)s',
-          )
-        : i18n.gettext(
-            'by %(urlStart)s%(authorName)s%(urlEnd)s, %(linkStart)s%(timestamp)s%(linkEnd)s',
-          );
-
       const byLineString = noAuthor
         ? // translators: Example in English: "posted last week"
           i18n.gettext('posted %(linkStart)s%(timestamp)s%(linkEnd)s')
         : // translators: Example in English: "by UserName123, last week"
-          withAuthor;
+          i18n.gettext(
+            'by %(authorName)s, %(linkStart)s%(timestamp)s%(linkEnd)s',
+          );
 
       // See https://github.com/mozilla/addons-frontend/issues/7322 for why we
       // need this code.
@@ -385,10 +379,26 @@ export class AddonReviewCardBase extends React.Component<InternalProps> {
           // `<Link />` using `replaceStringsWithJSX`.
           linkEnd: '%(linkEnd)s',
           linkStart: '%(linkStart)s',
-          urlStart: `<a href="${review.userUrl}">`,
-          urlEnd: '</a>',
+          urlEnd: '%(urlEnd)s',
+          urlStart: '%(urlStart)s',
         }),
         replacements: [
+          [
+            'urlStart',
+            'urlEnd',
+            (text) => {
+              return !review.userName && !review.userUrl ?
+                text
+              : (
+                <Link
+                  key={review.userName}
+                  to={review.userUrl}
+                >
+                  {text}
+                </Link>
+                );
+            },
+          ],
           [
             'linkStart',
             'linkEnd',
