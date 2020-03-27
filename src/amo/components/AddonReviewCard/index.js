@@ -387,7 +387,7 @@ export class AddonReviewCardBase extends React.Component<InternalProps> {
             'urlStart',
             'urlEnd',
             (text) => {
-              return !review.userName && !review.userUrl ?
+              return !review.userUrl ?
                 text
               : (
                 <Link
